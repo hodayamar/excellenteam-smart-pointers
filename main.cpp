@@ -1,5 +1,12 @@
 #include "s_ptr.h"
+#include "shared_ptr.h"
 #include <cstring>//strcpy
+
+#ifdef TESTING
+#define PRINT(x,num)(std::cout << x <<": "<<num<<std::endl)
+#else
+#define PRINT(x,num)
+#endif
 
 class Person {
 
@@ -47,7 +54,6 @@ void test_bool()
 
     if (p)
         std::cout << "Bool is OK" << std::endl;;
-
 }
 
 void test_star()
@@ -64,7 +70,6 @@ int main(){
     arrow_test();
     test_bool();
     test_star();
-
 
     return 0;
 }

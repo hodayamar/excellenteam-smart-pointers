@@ -13,10 +13,10 @@ public:
     explicit UniquePtr(T* ptr = NULL);
     ~UniquePtr();
 
-    T* operator->() const;
-    T& operator*()  const;
+    T* operator->()const;
+    T& operator*()const;
     T& operator = (T*);
-    operator bool();
+    operator bool()const;
 
     T* get() const;
 
@@ -30,11 +30,7 @@ private:
 
 template<typename T>
 UniquePtr<T>::UniquePtr(T* ptr ):m_ptr(ptr)
-{
-
-//    if (!ptr)
-//        throw std::invalid_argument();
-}
+{}
 
 template<typename T>
 UniquePtr<T>::~UniquePtr()
@@ -61,9 +57,21 @@ T* UniquePtr<T>::get() const
 }
 
 template<typename T>
-UniquePtr<T>::operator bool()
+UniquePtr<T>::operator bool()const
 {
     return m_ptr;
+}
+
+template<typename T>
+T& UniquePtr<T>::operator = (T* tmp)
+{
+    if (get() == tmp)
+        return *this;
+    if (tmp == NULL && m_ptr != NULL)
+        delete m_ptr;
+    else if (tmp != NULL)
+        m_ptr = new UniquePtr(tmp);
+    return *this;
 }
 #endif //EXCELLENTEAM_ELLA_CPP_SMART_POINTERS_HODAYAMAR_S_PTR_H
 
