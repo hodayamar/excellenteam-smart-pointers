@@ -28,6 +28,8 @@ public:
 
 private:
 
+    void delete_if_this_last_ptr();
+
     T*   m_ptr;
     int *refCount;
 };
@@ -45,16 +47,25 @@ shared_ptr<T>::shared_ptr(T* ptr) : m_ptr(ptr)
 
 
 template<typename T>
+void shared_ptr<T>::delete_if_this_last_ptr()
+{
+    if((*refCount) <= 0)
+    {
+        delete refCount;
+        delete m_ptr;
+    }
+}
+
+
+template<typename T>
 shared_ptr<T>::~shared_ptr()
 {
+
     if(isvalid())
     {
         --(*refCount);
-        if((*refCount) <= 0)
-        {
-            delete refCount;
-            delete m_ptr;
-        }
+
+        shared_ptr<T>::delete_if_this_last_ptr();
 
         refCount = NULL;
         m_ptr = NULL;
