@@ -14,24 +14,25 @@ public:
     ~shared_ptr();
 
     shared_ptr(shared_ptr const&);
-    shared_ptr& operator=(const shared_ptr &);
+    shared_ptr& operator=(shared_ptr &);
 
     T* operator->()const;
     T& operator*()const;
     operator bool()const;
 
-    bool operator==(const shared_ptr& ptr)const;
-    bool operator!=(const shared_ptr& ptr)const;
+    bool operator==(shared_ptr& ptr)const;
+    bool operator!=(shared_ptr& ptr)const;
 
     bool isvalid()const;
     T* get()const;
+    int * get_ref_counter();
 
 private:
 
     void delete_if_this_last_ptr();
 
-    T*   m_ptr;
     int *refCount;
+    T*   m_ptr;
 };
 
 
@@ -39,7 +40,10 @@ template<typename T>
 shared_ptr<T>::shared_ptr(T* ptr) : m_ptr(ptr)
 {
     if(ptr)
-      refCount = new int [1];
+    {
+        refCount = new int [1];
+        *refCount = 1;
+    }
 
     else
         refCount = NULL;
@@ -80,12 +84,19 @@ shared_ptr<T>::shared_ptr(shared_ptr const& ptr) : refCount(ptr.refCount), m_ptr
         (*refCount)++;
 }
 
-
 template<typename T>
-shared_ptr<T>& shared_ptr<T>::operator=(const shared_ptr& ptr)
+shared_ptr<T>& shared_ptr<T>::operator=(shared_ptr& ptr)
 {
-    shared_ptr<T>  temp(ptr);
-    temp.swap(*this);
+    //for ctor
+    shared_ptr<T> temp(ptr);
+
+    //for dtor
+    temp.refCount = refCount;
+    temp.m_ptr = m_ptr;
+
+    m_ptr = ptr.m_ptr;
+    refCount = ptr.refCount;
+
     return *this;
 }
 
@@ -126,16 +137,21 @@ bool shared_ptr<T>::isvalid()const
 
 
 template<typename T>
-bool shared_ptr<T>::operator==(const shared_ptr& ptr)const
+bool shared_ptr<T>::operator==(shared_ptr& ptr)const
 {
     return (m_ptr == ptr.m_ptr && refCount == ptr.refCount);
 }
 
 
 template<typename T>
-bool shared_ptr<T>::operator!=(const shared_ptr& ptr)const
+bool shared_ptr<T>::operator!=(shared_ptr& ptr)const
 {
-    return !(this == ptr);
+    return (m_ptr != ptr.m_ptr);
 }
 
+template<typename T>
+int * shared_ptr<T>::get_ref_counter()
+{
+    return refCount;
+}
 #endif //EXCELLENTEAM_ELLA_CPP_SMART_POINTERS_HODAYAMAR_SHARED_PTR_H
