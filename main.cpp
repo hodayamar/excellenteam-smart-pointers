@@ -100,13 +100,13 @@ void test_shared_ptr_assignment()
 
 int main(){
 
-//    person_to_s_ptr();
-//    test_arrow();
-//    test_bool();
-//    test_star();
-//    test_shared_ptr_dif ();
-//    test_cpy_shared_ptr();
-//    test_shared_ptr_dtor();
+    person_to_s_ptr();
+    test_arrow();
+    test_bool();
+    test_star();
+    test_shared_ptr_dif ();
+    test_cpy_shared_ptr();
+    test_shared_ptr_dtor();
     test_shared_ptr_assignment();
 
     return 0;

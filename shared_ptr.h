@@ -14,14 +14,14 @@ public:
     ~shared_ptr();
 
     shared_ptr(shared_ptr const&);
-    shared_ptr& operator=(shared_ptr &);
+    shared_ptr& operator=(const shared_ptr &);
 
     T* operator->()const;
     T& operator*()const;
     operator bool()const;
 
-    bool operator==(shared_ptr& ptr)const;
-    bool operator!=(shared_ptr& ptr)const;
+    bool operator==(const shared_ptr& ptr)const;
+    bool operator!=(const shared_ptr& ptr)const;
 
     bool isvalid()const;
     T* get()const;
@@ -85,7 +85,7 @@ shared_ptr<T>::shared_ptr(shared_ptr const& ptr) : refCount(ptr.refCount), m_ptr
 }
 
 template<typename T>
-shared_ptr<T>& shared_ptr<T>::operator=(shared_ptr& ptr)
+shared_ptr<T>& shared_ptr<T>::operator=(const shared_ptr& ptr)
 {
     //for ctor
     shared_ptr<T> temp(ptr);
@@ -137,14 +137,14 @@ bool shared_ptr<T>::isvalid()const
 
 
 template<typename T>
-bool shared_ptr<T>::operator==(shared_ptr& ptr)const
+bool shared_ptr<T>::operator==(const shared_ptr& ptr)const
 {
     return (m_ptr == ptr.m_ptr && refCount == ptr.refCount);
 }
 
 
 template<typename T>
-bool shared_ptr<T>::operator!=(shared_ptr& ptr)const
+bool shared_ptr<T>::operator!=(const shared_ptr& ptr)const
 {
     return (m_ptr != ptr.m_ptr);
 }
