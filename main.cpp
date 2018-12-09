@@ -1,29 +1,8 @@
 #include "s_ptr.h"
 #include "shared_ptr.h"
-#include <cstring>//strcpy
+#include "person.h"
 
-#ifdef TESTING
-#define PRINT(x,num)(std::cout << x <<": "<<num<<std::endl)
-#else
-#define PRINT(x,num)
-#endif
-
-class Person {
-
-public:
-
-    Person();
-    Person(const char * full_name);
-
-    void print()const;
-    const char * get_full_name()const;
-
-private:
-
-    char m_full_name[32];
-
-};
-
+////////UNIQ_PTR///////////
 
 void person_to_s_ptr()
 {
@@ -37,15 +16,15 @@ void person_to_s_ptr()
 
     if(&second_ptr - &first_ptr == 1)
 
-        std::cout << "smart_ptr is smart!" << std::endl;
+        std::cout << "Smart_ptr is smart!" << std::endl;
 }
 
-void arrow_test()
+void test_arrow()
 {
     UniquePtr<Person> p(new Person("Shlomit"));
 
     if (strcmp(p->get_full_name(), "Shlomit") == 0)
-        std::cout << "arrow is OK" << std::endl;
+        std::cout << "Arrow is OK" << std::endl;
 }
 
 void test_bool()
@@ -61,7 +40,7 @@ void test_star()
     UniquePtr<Person> p(new Person("Shlomit"));
 
     if (strcmp((*p).get_full_name(), "Shlomit") == 0)
-        std::cout << "star is OK" << std::endl;
+        std::cout << "Star is OK" << std::endl;
 }
 
 void test_shared_ptr_dif()
@@ -91,18 +70,18 @@ void test_shared_ptr_dtor()
 
     {
         shared_ptr<Person> p4(p1);
-
     }
 
     couner = p3.get_ref_counter();
     if(*couner == 3)
 
-        std::cout << "dtor is OK" << std::endl;
+
+        std::cout << "Dtor is OK" << std::endl;
 }
 
 void test_shared_ptr_assignment()
 {
-    int * counter_1, * counter_2;
+    int * counter_before_assignment, * counter_after_assignment;
 
     shared_ptr<Person> p1(new Person("Shlomit"));
     shared_ptr<Person> p2(new Person("Meir"));
@@ -111,10 +90,10 @@ void test_shared_ptr_assignment()
 
     p1 = p2;
 
-    counter_1 = p1.get_ref_counter();
-    counter_2 = p4.get_ref_counter();
+    counter_before_assignment = p1.get_ref_counter();
+    counter_after_assignment = p4.get_ref_counter();
 
-    if(*counter_1 == 3 && *counter_2 == 1)
+    if(*counter_before_assignment == 3 && *counter_after_assignment == 1)
 
         std::cout << "assignment is OK" << std::endl;
 }
@@ -122,7 +101,7 @@ void test_shared_ptr_assignment()
 int main(){
 
 //    person_to_s_ptr();
-//    arrow_test();
+//    test_arrow();
 //    test_bool();
 //    test_star();
 //    test_shared_ptr_dif ();
@@ -131,21 +110,6 @@ int main(){
     test_shared_ptr_assignment();
 
     return 0;
-}
-
-Person::Person(const char * full_name)
-{
-    strcpy(m_full_name, full_name);
-}
-
-void Person::print()const
-{
-    std::cout << "m_full_name: " << m_full_name << std::endl;
-}
-
-const char * Person::get_full_name()const
-{
-    return m_full_name;
 }
 
 
