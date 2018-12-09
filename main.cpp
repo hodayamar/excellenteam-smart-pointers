@@ -46,7 +46,7 @@ void test_star()
 void test_shared_ptr_dif()
 {
     shared_ptr<Person> p1(new Person("Shlomit"));
-    shared_ptr<Person> p2(new Person("Shlomit"));
+    shared_ptr<Person> p2(new Person("Meir"));
 
     if (p1 != p2)
         std::cout << "!= is OK" << std::endl;

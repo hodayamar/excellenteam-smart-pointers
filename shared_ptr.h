@@ -41,8 +41,7 @@ shared_ptr<T>::shared_ptr(T* ptr) : m_ptr(ptr)
 {
     if(ptr)
     {
-        refCount = new int [1];
-        *refCount = 1;
+        refCount = new int (1);
     }
 
     else
