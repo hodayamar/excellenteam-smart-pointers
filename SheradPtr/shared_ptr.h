@@ -15,7 +15,7 @@ public:
 
     shared_ptr(const shared_ptr &);
     shared_ptr& operator=(const shared_ptr &);
-    shared_ptr& operator=(T*);/////////////Todo
+    shared_ptr& operator=(T*);//Todo
 
     T* operator->()const;
     T& operator*()const;
@@ -24,32 +24,19 @@ public:
     bool operator==(const shared_ptr& ptr)const;
     bool operator!=(const shared_ptr& ptr)const;
 
+
     bool isvalid()const;
     T* get()const;
     size_t * get_ref_counter();
 
+    template<typename U>
+    shared_ptr(const shared_ptr<U>& ptr);
+
+    template<typename U>
+    friend class shared_ptr;
+
+
 private:
-
-//    class refCount
-//    {
-//    public:
-//        refCount(T* ptr = NULL);
-//        ~refCount();
-//
-//        void inc();
-//        bool dec();
-
-//        T* operator->()const;
-//        T& operator*()const;
-//        operator bool()const;
-
-//        bool operator==(const shared_ptr& ptr)const;
-//        bool operator!=(const shared_ptr& ptr)const;
-//    private:
-//        size_t *refCount;
-//        T*   m_ptr;
-//
-//    };
 
     size_t *refCount;
     T*   m_ptr;
@@ -103,9 +90,24 @@ shared_ptr<T>::shared_ptr(const shared_ptr& ptr)
    :refCount(ptr.refCount),
     m_ptr(ptr.m_ptr)
 {
+    std::cout << "template<typename T>cpytor" << std::endl;
+
     if(isvalid())
         (*refCount)++;
 }
+
+template<typename T>
+template<typename U>
+shared_ptr<T>::shared_ptr(const shared_ptr<U>& ptr)
+        :refCount(ptr.refCount),
+         m_ptr(ptr.m_ptr)
+{
+    std::cout << "template<typename U>cpytor" << std::endl;
+    if(isvalid())
+        (*refCount)++;
+}
+
+
 
 template<typename T>
 void shared_ptr<T>::swap(shared_ptr& other)
@@ -177,4 +179,6 @@ inline size_t * shared_ptr<T>::get_ref_counter()
 {
     return refCount;
 }
+
+
 #endif //EXCELLENTEAM_ELLA_CPP_SMART_POINTERS_HODAYAMAR_SHARED_PTR_H

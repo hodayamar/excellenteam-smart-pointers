@@ -1,6 +1,6 @@
 #include "shared_ptr.h"
 #include "person.h"
-
+#include "shape.h"
 void test_shared_ptr_dif()
 {
     shared_ptr<Person> p1(new Person("Shlomit"));
@@ -21,7 +21,9 @@ void test_cpy_shared_ptr()
 
 void test_shared_ptr_dtor()
 {
-    int * couner;
+    std::cout << "test_shared_ptr_dtor" << std::endl;
+
+    size_t * couner;
     shared_ptr<Person> p1(new Person("Shlomit"));
     shared_ptr<Person> p2(p1);
     shared_ptr<Person> p3(p1);
@@ -39,7 +41,7 @@ void test_shared_ptr_dtor()
 
 void test_shared_ptr_assignment()
 {
-    int * counter_before_assignment, * counter_after_assignment;
+    size_t * counter_before_assignment, * counter_after_assignment;
 
     shared_ptr<Person> p1(new Person("Shlomit"));
     shared_ptr<Person> p2(new Person("Meir"));
@@ -56,12 +58,24 @@ void test_shared_ptr_assignment()
         std::cout << "assignment is OK" << std::endl;
 }
 
+void test_polymorphism_in_shared_ptr()
+{
+    shared_ptr<Rectangle> rectSPt( new Rectangle(22.2, 11.1) );
+    shared_ptr<Shape> shapeSPt(rectSPt);
+
+//    shared_ptr<Person> personSpt( new Person("Kyle") );
+//    shared_ptr<Shape> shapeSPt(personSpt);sould not compuile!!!
+}
+
 int main(){
 
     test_shared_ptr_dif ();
     test_cpy_shared_ptr();
     test_shared_ptr_dtor();
     test_shared_ptr_assignment();
+    test_polymorphism_in_shared_ptr();
+
+
 
     return 0;
 }
